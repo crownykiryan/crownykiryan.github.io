@@ -1,12 +1,492 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Things...</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nikyrian Crow Story Repository</title>
+  <meta
+    name="description"
+    content="A personal story archive featuring original fiction, chapters, and worldbuilding."
+  />
+  <style>
+    :root {
+      --bg: #0f1220;
+      --bg-soft: #171b2e;
+      --card: #1d233a;
+      --card-hover: #252d49;
+      --text: #f4f7ff;
+      --muted: #b9c2de;
+      --accent: #8b6cff;
+      --accent-soft: #b7a7ff;
+      --border: rgba(255, 255, 255, 0.08);
+      --shadow: 0 18px 45px rgba(0, 0, 0, 0.28);
+      --max-width: 1180px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background:
+        radial-gradient(circle at top, rgba(139, 108, 255, 0.18), transparent 35%),
+        linear-gradient(180deg, #0b0e18 0%, var(--bg) 100%);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    .container {
+      width: min(92%, var(--max-width));
+      margin: 0 auto;
+    }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(12px);
+      background: rgba(15, 18, 32, 0.75);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 1rem 0;
+    }
+
+    .brand {
+      font-size: 1.2rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+    }
+
+    .brand span {
+      color: var(--accent-soft);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      transition: color 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--text);
+    }
+
+    .hero {
+      padding: 5.5rem 0 3rem;
+    }
+
+    .hero-wrap {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      padding: 0.35rem 0.8rem;
+      border-radius: 999px;
+      background: rgba(139, 108, 255, 0.14);
+      color: var(--accent-soft);
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+      border: 1px solid rgba(139, 108, 255, 0.2);
+    }
+
+    .hero h1 {
+      font-size: clamp(2.3rem, 5vw, 4.5rem);
+      line-height: 1.05;
+      margin: 0 0 1rem;
+    }
+
+    .hero p {
+      color: var(--muted);
+      font-size: 1.06rem;
+      max-width: 62ch;
+      margin: 0 0 1.5rem;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .button {
+      display: inline-block;
+      padding: 0.9rem 1.2rem;
+      border-radius: 12px;
+      font-weight: 700;
+      transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+      border: 1px solid transparent;
+    }
+
+    .button:hover {
+      transform: translateY(-2px);
+    }
+
+    .button-primary {
+      background: var(--accent);
+      color: white;
+    }
+
+    .button-primary:hover {
+      background: #7d5df5;
+    }
+
+    .button-secondary {
+      background: transparent;
+      border-color: var(--border);
+      color: var(--text);
+    }
+
+    .button-secondary:hover {
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .hero-card {
+      background: linear-gradient(180deg, rgba(139, 108, 255, 0.18), rgba(255, 255, 255, 0.03));
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 1.5rem;
+      box-shadow: var(--shadow);
+    }
+
+    .hero-card h2 {
+      margin-top: 0;
+      font-size: 1.35rem;
+    }
+
+    .hero-card ul {
+      padding-left: 1.2rem;
+      margin: 0;
+      color: var(--muted);
+    }
+
+    section {
+      padding: 2rem 0 1rem;
+    }
+
+    .section-title {
+      font-size: 2rem;
+      margin: 0 0 0.5rem;
+    }
+
+    .section-subtitle {
+      color: var(--muted);
+      margin: 0 0 1.5rem;
+    }
+
+    .featured {
+      margin-top: 1rem;
+    }
+
+    .featured-card {
+      display: grid;
+      grid-template-columns: 1fr 1.1fr;
+      gap: 1.5rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+
+    .featured-image {
+      min-height: 300px;
+      background:
+        linear-gradient(135deg, rgba(139, 108, 255, 0.65), rgba(15, 18, 32, 0.35)),
+        url("https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=1200&q=80") center/cover no-repeat;
+    }
+
+    .featured-content {
+      padding: 1.8rem;
+    }
+
+    .tag-row {
+      display: flex;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 0.3rem 0.7rem;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      color: var(--accent-soft);
+      background: rgba(139, 108, 255, 0.12);
+      border: 1px solid rgba(139, 108, 255, 0.18);
+    }
+
+    .featured-content h3 {
+      margin: 0 0 0.8rem;
+      font-size: 1.8rem;
+    }
+
+    .featured-content p {
+      color: var(--muted);
+      margin-bottom: 1.2rem;
+    }
+
+    .story-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1.25rem;
+    }
+
+    .story-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 1.3rem;
+      transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+      box-shadow: var(--shadow);
+    }
+
+    .story-card:hover {
+      transform: translateY(-4px);
+      background: var(--card-hover);
+      border-color: rgba(139, 108, 255, 0.35);
+    }
+
+    .story-card h3 {
+      margin-top: 0.35rem;
+      margin-bottom: 0.5rem;
+      font-size: 1.2rem;
+    }
+
+    .story-meta {
+      color: var(--muted);
+      font-size: 0.92rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .story-card p {
+      color: var(--muted);
+      margin-bottom: 1rem;
+    }
+
+    .story-link {
+      color: var(--accent-soft);
+      font-weight: 700;
+    }
+
+    .about-box {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 1.5rem;
+      color: var(--muted);
+    }
+
+    .site-footer {
+      padding: 3rem 0;
+      margin-top: 2rem;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      text-align: center;
+    }
+
+    @media (max-width: 900px) {
+      .hero-wrap,
+      .featured-card,
+      .story-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .featured-image {
+        min-height: 220px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .nav {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .hero {
+        padding-top: 4rem;
+      }
+
+      .hero-actions {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .button {
+        text-align: center;
+      }
+    }
+  </style>
 </head>
 <body>
-    <h1>Welcome</h1>
-    <p>Thank you for visiting.</p>
+  <header class="site-header">
+    <div class="container nav">
+      <a href="#" class="brand">Story<span>Vault</span></a>
+      <nav class="nav-links">
+        <a href="#featured">Featured</a>
+        <a href="#stories">Stories</a>
+        <a href="#about">About</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-wrap">
+        <div>
+          <div class="eyebrow">Original Fiction • Chapters • Worlds</div>
+          <h1>A home for stories worth getting lost in.</h1>
+<p>
+  Welcome to my story repository, where I share original fiction, chapter updates, and the worlds taking shape behind the scenes. My main project is <em>Into the Box</em>, a dystopian story about a future society where falling too far behind can get you sent into a controlled commune that promises safety, reform, and opportunity at a terrifying cost. This site is where that story grows, alongside the ideas, notes, and other fiction that live around it.
+</p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#stories">Browse Stories</a>
+            <a class="button button-secondary" href="#about">About the Author</a>
+          </div>
+        </div>
+
+        <aside class="hero-card">
+          <h2>Contact Information</h2>
+          <ul>
+            <li>Youtube</li>
+            <li>Facebook</li>
+          </ul>
+        </aside>
+      </div>
+    </section>
+
+    <section id="featured" class="featured">
+      <div class="container">
+        <h2 class="section-title">Featured Story</h2>
+        <p class="section-subtitle">
+          The current most worked project story:
+        </p>
+
+        <article class="featured-card">
+          <div class="featured-image" aria-hidden="true"></div>
+          <div class="featured-content">
+            <div class="tag-row">
+              <span class="tag">Fantasy</span>
+              <span class="tag">Sci-Fi</span>
+              <span class="tag">Ongoing</span>
+            </div>
+            <h3>Into The Box</h3>
+            <p>
+In a future America where falling below the poverty line can get you legally relocated to a walled experimental commune called the Box, one desperate teenager volunteers to enter believing it is the only ladder left. Inside, the Box promises safety, order, and advancement, but its sterile rules hide a system that watches everything, punishes proximity to violence, and decides who deserves to remain human. The tone is tense, claustrophobic, and unsettling, built on the contrast between hopeful propaganda and the quiet horror of losing your freedom one policy at a time. At its heart, the story asks whether Niki can survive long enough to build a future, or whether the Box will reshape him into exactly the kind of person it claims to save.
+            </p>
+            <a class="button button-primary" href="stories/story-one.html">Read Story</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="stories">
+      <div class="container">
+        <h2 class="section-title">Story Archive</h2>
+        <p class="section-subtitle">
+          This is work in progress...
+        </p>
+
+        <div class="story-grid">
+          <article class="story-card">
+            <div class="tag-row">
+              <span class="tag">Fantasy</span>
+	      <span class="tag">Sci-Fi</span>
+              <span class="tag">Ongoing</span>
+            </div>
+            <h3>Into The Box</h3>
+            <div class="story-meta">5 chapters • Sci-Fi • Ongoing</div>
+            <p>
+Short story about life in the US of A in 2050 and what happens when one has a choice to move to "The Box". Not everyone has the choice...
+            </p>
+            <a class="story-link" href="stories/story-one.html">Open story →</a>
+          </article>
+
+          <article class="story-card">
+            <div class="tag-row">
+              <span class="tag">Romance</span>
+              <span class="tag">Ongoing</span>
+            </div>
+            <h3>Between Two Realms</h3>
+            <div class="story-meta">16 chapters • Romance • Ongoing</div>
+            <p>
+Story describing two people stuck navigating a world shattering conflict...
+            </p>
+            <a class="story-link" href="stories/story-two.html">Open story →</a>
+          </article>
+
+          <article class="story-card">
+            <div class="tag-row">
+              <span class="tag">Sci-Fi</span>
+              <span class="tag">Drafting</span>
+            </div>
+            <h3>Dreamers</h3>
+            <div class="story-meta">?? chapters • Sci-fi • Drafting</div>
+            <p>
+This one is probably a short story about dreams...
+            </p>
+            <a class="story-link" href="stories/story-three.html">Open story →</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="about">
+      <div class="container">
+        <h2 class="section-title">About</h2>
+        <p class="section-subtitle">
+          I am Nikyrian Crow. Writing sci-fi and romance stories as well as general fiction.
+        </p>
+        <div class="about-box">
+          <p>
+            Hello, and welcome. Original stories with a focus on character,
+            atmosphere, and immersive worlds live here. This repository is where I collect my
+            projects, publish chapters, and share the stories I am building.
+          </p>
+          <p>
+Update Schedule:
+Work in progress...
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© 2026 Nikyrian Crow • Built with GitHub Pages</p>
+    </div>
+  </footer>
 </body>
 </html>
